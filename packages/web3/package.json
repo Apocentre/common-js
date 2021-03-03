@@ -1,5 +1,5 @@
 {
-  "name": "@apocentre/eth-bsc",
+  "name": "@apocentre/web3",
   "version": "1.0.0",
   "main": "lib/index.js",
   "contributors": ["Pavlos Polianidis <info@apocentre.com> (https://www.apocentre.com/)"],
