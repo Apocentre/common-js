@@ -1,0 +1,20 @@
+{
+  "name": "@hotcrosscom/event-listener",
+  "version": "2.0.0",
+  "main": "lib/index.js",
+  "contributors": ["Pavlos Polianidis <info@apocentre.com> (https://www.apocentre.com/)","Philip Arthur Moore <philip@frontier.xyz> (https://frontier.xyz/)"],
+  "license": "MIT",
+  "dependencies": {
+    "@hotcrosscom/abi": "^2.0.0",
+    "@hotcrosscom/common": "^2.0.0",
+    "@hotcrosscom/eth-bsc": "^2.0.0",
+    "@hotcrosscom/logger": "^2.0.0",
+    "@ppoliani/im-record": "^1.0.0"
+  },
+  "repository": "git@github.com:hotcross/bsc-peg.git",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "gitHead": "760b0c1662ec2b3132cd3476cc18361a9044ad28"
+}
