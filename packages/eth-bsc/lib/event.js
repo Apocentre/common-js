@@ -1,5 +1,5 @@
-const logger = require('@hotcrosscom/logger')
-const {duration} = require('@hotcrosscom/common')
+const logger = require('@apocentre/logger')
+const {duration} = require('@apocentre/common')
 
 const findInterface = (contract, eventName) => contract
   .options

@@ -1,12 +1,9 @@
 {
-  "name": "@hotcrosscom/logger",
+  "name": "@apocentre/logger",
   "version": "2.0.0",
   "main": "lib/index.js",
   "license": "MIT",
-  "contributors": [
-    "Pavlos Polianidis <info@apocentre.com> (https://www.apocentre.com/)",
-    "Philip Arthur Moore <philip@frontier.xyz> (https://frontier.xyz/)"
-  ],
+  "contributors": ["Pavlos Polianidis <info@apocentre.com> (https://www.apocentre.com/)"],
   "dependencies": {
     "browser-or-node": "^1.3.0",
     "winston": "^3.3.3",

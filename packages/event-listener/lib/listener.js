@@ -1,7 +1,7 @@
 const Record = require('@ppoliani/im-record')
-const logger = require('@hotcrosscom/logger')
-const {EthBsc} = require('@hotcrosscom/eth-bsc')
-const {duration} = require('@hotcrosscom/common')
+const logger = require('@apocentre/logger')
+const {EthBsc} = require('@apocentre/eth-bsc')
+const {duration} = require('@apocentre/common')
 
 
 const loadEvents = inst => async latestBlock => {
