@@ -1,18 +1,24 @@
 const Record = require('@ppoliani/im-record')
 const logger = require('@apocentre/logger')
 const {EthBsc} = require('@apocentre/eth-bsc')
-const {duration} = require('@apocentre/common')
 
+const getStartingBlock = async inst => {
+  const startingBlock =  Number(
+    !inst.latestFetchedBlock
+      ? await inst.contractRepository.getContractBlockNumber(inst)
+      : inst.latestFetchedBlock
+  )
 
-const loadEvents = inst => async latestBlock => {
+  return Number(startingBlock)
+}
+
+const loadEvents = inst => async (startingBlock, latestBlock) => {
   try {
-    const startingBlock = Number(
-      inst.latestFetchedBlock
-        ? inst.latestFetchedBlock
-        : await inst.contractRepository.getContractBlockNumber(inst)
-    )
+    if(startingBlock === undefined) {
+      startingBlock = await getStartingBlock(inst)
+    }
 
-    logger.info(`Load events for blocks ${[startingBlock, latestBlock]} on ${network}`)
+    logger.info(`Load events for blocks ${[startingBlock, latestBlock]} on ${inst.network}`)
 
     const logs = await inst.ethBsc.getPastLogs(
       inst.contractRepository.getContract(inst),
@@ -21,54 +27,62 @@ const loadEvents = inst => async latestBlock => {
       latestBlock
     )
 
-    logger.info(`${logs.length} events fetched from ${network}`)
+    logger.info(`${logs.length} events fetched from ${inst.network}`)
 
     await inst.processLogs(logs, startingBlock)
 
     // We're updating the local value, however nothing guarantees that the process logs will be successful.
     // That's responsibility of the caller which would need to restart the listener passing the correct startingBlock
     // if an error occurs
-    inst.latestFetchedBlock = latestBlock + 1
+    inst.latestFetchedBlock = Math.max(latestBlock + 1, inst.latestFetchedBlock || 0)
   }
   catch(error) {
-    inst.onError(error)
+    inst.onError({
+      message: error.message,
+      data: {startingBlock, latestBlock}
+    })
   }
 }
 
 const listen = inst => {
   const onData = async (data) => {
     inst.onBlockHeader(data)
-    await loadEvents(inst)(data.number)
+    await loadEvents(inst)(await getStartingBlock(inst), data.number)
   }
 
   return inst.ethBsc.subscribeToBlockHeader(
-    inst.processDelay,
     onData, 
     inst.onError
   )
 }
 
-const init = inst => (network, provider, processDelay=duration.minutes(3)) => {
+const init = inst => (
+  network,
+  provider,
+  blockTime,
+  blockFinality
+) => {
   inst.ethBsc = EthBsc()
+  inst.ethBsc.init(network, provider, blockTime, blockFinality)
   inst.network = network
-  inst.ethBsc.init(network, provider)
   inst.latestFetchedBlock = inst.startingBlock
-  inst.processDelay = processDelay
 }
+
+const noop = _ => () => {}
 
 const EventListener = Record({
   event: undefined,
   network: undefined,
-  processDelay: undefined,
   startingBlock: undefined,
   processLogs: null,
-  onBlockHeader: null,
   onError: null,
   latestFetchedBlock: undefined,
   contractRepository: undefined,
 
+  onBlockHeader: noop,
   init,
-  listen
+  listen,
+  loadEvents
 })
 
 module.exports = EventListener

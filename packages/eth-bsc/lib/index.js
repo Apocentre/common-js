@@ -9,9 +9,16 @@ const {Networks} = require('./network')
 const {subscribe, decodeLog, getPastLogs, subscribeToBlockHeader} = require('./event')
 const {craftTx, signTx, sendTx} = require('./tx')
 
-const init = inst => (network, provider) => {
+const init = inst => (
+  network,
+  provider,
+  blockTime=duration.seconds(15),
+  blockFinality=12
+) => {
   inst.network = network
-  inst.web3 = new Web3(provider)
+  inst.web3 = new Web3(provider),
+  inst.blockTime = blockTime
+  inst.blockFinality = blockFinality
 }
 
 const EthBsc = Record({ 

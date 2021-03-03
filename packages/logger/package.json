@@ -1,6 +1,6 @@
 {
   "name": "@apocentre/logger",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "license": "MIT",
   "contributors": ["Pavlos Polianidis <info@apocentre.com> (https://www.apocentre.com/)"],
@@ -9,7 +9,7 @@
     "winston": "^3.3.3",
     "winston-loggly-bulk": "^3.1.1"
   },
-  "repository": "git@github.com:hotcross/bsc-peg.git",
+  "repository": "git@github.com:Apocentre/common-js.gits",
   "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com"

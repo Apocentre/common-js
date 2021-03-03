@@ -35,15 +35,19 @@ const craftTx = inst => async opts => {
   }
 }
 
-const sendTx = inst => signedTx => new Promise(resolve => {
+const sendTx = inst => signedTx => new Promise((resolve, reject) => {
+  const nonceManager = getNonceManager(inst.web3)
+  
   inst.web3
     .eth
     .sendSignedTransaction(signedTx.rawTransaction)
     .on('transactionHash', async txHash => {
-      const nonceManager = getNonceManager(inst.web3)
       nonceManager.incNonce()
 
       resolve(txHash)
+    })
+    .on('error', error => {
+      reject(error)
     })
 })
 

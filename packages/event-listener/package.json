@@ -1,6 +1,6 @@
 {
   "name": "@apocentre/event-listener",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "contributors": ["Pavlos Polianidis <info@apocentre.com> (https://www.apocentre.com/)"],
   "license": "MIT",
@@ -10,7 +10,7 @@
     "@apocentre/logger": "^2.0.0",
     "@ppoliani/im-record": "^1.0.0"
   },
-  "repository": "git@github.com:hotcross/bsc-peg.git",
+  "repository": "git@github.com:Apocentre/common-js.git",
   "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com"

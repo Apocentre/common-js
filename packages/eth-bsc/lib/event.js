@@ -51,7 +51,7 @@ const getPastLogs = inst => async (contract, eventName, fromBlock, toBlock) => {
   }))
 }
 
-const subscribeToBlockHeader = inst => (processDelay, onData, onError) => {
+const subscribeToBlockHeader = inst => (onData, onError) => {
   // BSC doesn't offer a WS server; so we will have to emulate web3.eth.subscribe('newBlockHeaders')
   // with a simple polling
   const intervalId = setInterval(async () => {
@@ -72,14 +72,14 @@ const subscribeToBlockHeader = inst => (processDelay, onData, onError) => {
       // values to change. https://ethereum.stackexchange.com/questions/37437/log-index-change-during-chain-reorganization.
       // To avoid that we will give 12 blocks space (3 mins) which is a fairly safe delay to avoid processing anything
       // which due to reorg might change.
-      setTimeout(() => {
-        onData({number})
-      }, processDelay)
+      onData({
+        number: number - inst.blockFinality
+      })
     }
     catch(error) {
       onError(error)
     }
-  }, duration.seconds(10))
+  }, inst.blockTime)
 
   return {
     unsubscribe: () => {
